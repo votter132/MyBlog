@@ -1,0 +1,90 @@
+@use "sass:math";
+@use "sass:string";
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  // font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  // overflow: auto;
+  background-color: #000;
+}
+
+
+// 定义星星的大小
+$sky-size: 2000;
+
+// 修正 generate-star 函数，去除引号，保证 box-shadow 正确
+@function generate-star($num) {
+  $value: string.unquote("#{math.random($sky-size)}px #{math.random($sky-size)}px #fff");
+
+  @for $i from 2 through $num {
+    $value: $value, string.unquote("#{math.random($sky-size)}px #{math.random($sky-size)}px #fff");
+  }
+
+  @return $value;
+}
+
+.star {
+  width: 1px;
+  height: 1px;
+  background-color: transparent;
+  box-shadow: generate-star(700);
+  animation: animate 80s linear infinite;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1; // 保证星星显示在内容下方
+  pointer-events: none; // 不影响页面交互
+}
+
+.medium-star {
+  width: 2px;
+  height: 2px;
+  background-color: transparent;
+  box-shadow: generate-star(400);
+  animation: animate 120s linear infinite;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.big-star {
+  width: 3px;
+  height: 3px;
+  background-color: transparent;
+  box-shadow: generate-star(100);
+  animation: animate 160s linear infinite;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes animate {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-#{$sky-size}px);
+  }
+}
