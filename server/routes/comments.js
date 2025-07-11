@@ -10,6 +10,12 @@ router.post('/', (req, res) => {
     reply_id: req.auth.uid
   })
     .then((r) => {
+      if (!req.auth.power) {
+        return res.json({
+          code: 0,
+          msg: '请先进行登录'
+        })
+      }
       res.json({
         code: 1,
         msg: '评论添加成功'

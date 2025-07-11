@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useUserStore } from '@/stores';
-
 // 常量路由（所有用户可访问）
 const constantRoutes = [
   {
@@ -79,26 +78,34 @@ const router = createRouter({
   routes: constantRoutes
 });
 
-// 权限检查方法
+// 权限检查方法 - 修改：允许未登录用户访问不需要权限的路由
 const hasPermission = (userRole, route) => {
   if (!route.meta?.role) return true;
+  // 未登录用户没有任何角色，返回false
+  if (!userRole) return false;
   return userRole === route.meta.role;
-};
+}
 
 // 重置路由方法
 export const resetRouter = () => {
   const newRouter = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: constantRoutes
-  });
-  router.matcher = newRouter.matcher;
-};
+  })
+  router.matcher = newRouter.matcher
+}
 
-// 动态添加路由
+// 动态添加路由 - 修改：只在用户已登录时添加动态路由
 export const addDynamicRoutes = () => {
   try {
     const userStore = useUserStore();
     const userRole = userStore.userInfo?.power || '';
+
+    // 如果用户未登录，不添加动态路由
+    if (!userRole) {
+      Elmessage.error('请先登录')
+      return
+    }
 
     // 重置路由避免重复添加
     resetRouter();
@@ -116,13 +123,32 @@ export const addDynamicRoutes = () => {
   }
 };
 
-// 路由守卫
+// 记录是否已添加过动态路由
+let isDynamicRoutesAdded = false;
+
+// 路由守卫 - 修改：优化未登录状态的处理
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore();
   const userRole = userStore.userInfo?.power || '';
+  // 未登录用户访问动态路由路径（如/htmanage）：直接拦截跳转
+  if (!userRole && to.path.startsWith('/htmanage')) {
+    ElMessage.error('请先登录');
+    return next('/index'); // 立即跳转登录页，避免空白
+  }
+  // 如果用户已登录但动态路由尚未添加，添加动态路由
+  if (userRole && !isDynamicRoutesAdded) {
+    try {
+      await addDynamicRoutes();
+      isDynamicRoutesAdded = true;
+      return next({ ...to, replace: true }); // 重新加载以应用新路由
+    } catch (error) {
+      console.error('重加载路由失败:', error);
+      return next('/');
+    }
+  }
 
-  // 处理刷新时路由丢失的问题
-  if (to.matched.length === 0) {
+  // 处理刷新时路由丢失的问题 - 修改：只在用户已登录时重新加载路由
+  if (userRole && to.matched.length === 0) {
     // 检查是否是动态路由路径
     if (to.path.startsWith('/htmanage')) {
       try {
@@ -133,17 +159,16 @@ router.beforeEach(async (to, from, next) => {
         return next('/');
       }
     }
-    return next('/');
   }
 
   // 权限检查
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    // 如果用户已登录但权限不足
     if (!hasPermission(userRole, to)) {
-      console.error('权限不足，访问被拒绝:', to.path);
+      Elmessage.error('权限不足')
       return next('/');
     }
   }
-
   next();
 });
 

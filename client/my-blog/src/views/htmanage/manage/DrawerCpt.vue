@@ -19,7 +19,7 @@ const form = ref({
 // 上传URL，根据实际情况修改
 const userStore = useUserStore()
 
-const uploadUrl = 'http://localhost:3000/api/upload'; // 对应后端路由的路径
+const uploadUrl = 'http://47.122.85.193:3000/api/upload'; // 对应后端路由的路径
 // 上传请求头，添加token等认证信息（如果需要）
 const headers = {
   'Authorization': 'Bearer ' + userStore.token, // 如果需要认证
@@ -155,8 +155,8 @@ defineExpose({
 
         <!-- 显示已上传的图片 -->
         <div v-if="form.imgUrl" style="width: 100px;">
-          <el-image max-scale="1" :src="'http://localhost:3000' + form.imgUrl"
-            :preview-src-list="['http://localhost:3000' + form.imgUrl]" />
+          <el-image max-scale="1" :src="'http://47.122.85.193:3000' + form.imgUrl"
+            :preview-src-list="['http://47.122.85.193:3000' + form.imgUrl]" />
           <el-button size="small" type="danger" @click="removeImage">删除图片</el-button>
         </div>
       </el-form-item>

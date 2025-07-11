@@ -26,6 +26,12 @@ router.post('/', (req, res) => {
 
   Danmu.create(req.body)
     .then((r) => {
+      if (!req.auth.power) {
+        return res.json({
+          code: 0,
+          msg: '请先进行登录'
+        })
+      }
       res.json({
         code: 1,
         msg: '弹幕添加成功'

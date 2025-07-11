@@ -33,8 +33,8 @@
             </template>
           </el-upload>
           <div v-if="newPhoto.imgUrl" style="width: 100px;">
-            <el-image max-scale="1" :src="'http://localhost:3000' + newPhoto.imgUrl"
-              :preview-src-list="['http://localhost:3000' + newPhoto.imgUrl]" />
+            <el-image max-scale="1" :src="'http://47.122.85.193:3000' + newPhoto.imgUrl"
+              :preview-src-list="['http://47.122.85.193:3000' + newPhoto.imgUrl]" />
             <el-button size="small" type="danger" @click="removeImage">删除图片</el-button>
           </div>
         </el-form-item>
@@ -52,7 +52,7 @@
         transform: `rotate(${frame.rotate}deg)`,
         zIndex: frame.zIndex
       }" :class="{ dragging: frame._id === draggingFrameId }" @mousedown="startDrag($event, frame)">
-        <div class="photo-content" :style="{ backgroundImage: `url(${'http://localhost:3000' + frame.imgUrl})` }">
+        <div class="photo-content" :style="{ backgroundImage: `url(${'http://47.122.85.193:3000' + frame.imgUrl})` }">
           <div class="photo-label">{{ frame.content }}</div>
         </div>
         <div class="frame-corner corner-tl"></div>
@@ -85,7 +85,7 @@ const newPhoto = ref({
   imgUrl: ''
 });
 // 上传路由
-const uploadUrl = 'http://localhost:3000/api/upload';
+const uploadUrl = 'http://47.122.85.193:3000/api/upload';
 // 上传请求头，添加token等认证信息（如果需要）
 const headers = {
   'Authorization': 'Bearer ' + userStore.token, // 如果需要认证

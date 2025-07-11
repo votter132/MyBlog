@@ -2,7 +2,8 @@
 import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue'
 import { getDanmu, addDanmu } from '@/api/danmaku'
 import { ElMessage } from 'element-plus'
-
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 // 弹幕容器引用
 const screenRef = ref(null)
 // 输入的新弹幕
@@ -174,10 +175,9 @@ const sendDanmakuToDB = async (content) => {
       ElMessage.error(res.message || '弹幕发送失败')
       return null
     }
-  } catch (error) {
-    console.error('发送弹幕API调用失败:', error)
-    ElMessage.error('网络错误，弹幕发送失败')
-    return null
+  }
+  catch (err) {
+    console.log('发送弹幕失败', err);
   }
 }
 
@@ -193,6 +193,10 @@ const sendDanmaku = async () => {
   }
 
   // 先添加到界面
+  if (!userStore.userInfo.power) {
+    ElMessage.error('请先登录')
+    return
+  }
   if (addDanmaku(content, new Date(), true)) {
     // 发送到数据库
     const dbDanmaku = await sendDanmakuToDB(content)
@@ -288,7 +292,7 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-    <div class="form-control" style="scale: 1.5;z-index: 9999;">
+    <div class="form-control" style="scale: 1.5;z-index: 20;">
       <input v-model="newDanmaku" type="text" required="" @keyup.enter="sendDanmaku">
       <label>
         <span style="transition-delay:0ms">按</span><span style="transition-delay:50ms">下</span><span

@@ -126,7 +126,7 @@ onActivated(() => {
     <div class="article">
       <el-card class="card" v-for="item in arrdata" :key="item._id" @click="checkArticle(item)">
         <div class="imgbox">
-          <img :src="`http://localhost:3000${item.imgUrl}`" alt="图片" />
+          <img :src="`http://47.122.85.193:3000${item.imgUrl}`" alt="图片" />
         </div>
         <div style="height: 100px; display: flex;align-items: center;">
           <div style="padding: 0 30px;">

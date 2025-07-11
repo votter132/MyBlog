@@ -100,7 +100,7 @@ onMounted(() => {
         <div>
           <div class="conment" style="display: flex;align-items:flex-start;">
             <span>
-              <el-avatar :size="50" :src="'http://localhost:3000' + item.reply_id.headImgUrl || circleUrl" />
+              <el-avatar :size="50" :src="'http://47.122.85.193:3000' + item.reply_id.headImgUrl || circleUrl" />
               <span style="display: block;">{{ item.reply_id.nickname }}</span>
             </span>
             <span style="margin-left: 20px;margin-top: 20px;">{{ dayjs(item.createdAt).format('YYYY/M/D') }}</span>

@@ -100,7 +100,7 @@ const navClass = computed(() => {
           <div style="width: 70px;height: 70px;" v-if="userStore.token === ''" class="loader" @click="openLoginDialog">
             <login-logo></login-logo>
           </div>
-          <el-avatar v-else :size="50" :src="'http://localhost:3000' + userStore.userInfo.headImgUrl"
+          <el-avatar v-else :size="50" :src="'http://47.122.85.193:3000' + userStore.userInfo.headImgUrl"
             @click="openLoginDialog" />
         </a>
       </div>
@@ -129,7 +129,7 @@ const navClass = computed(() => {
           <div v-if="userStore.token === ''" class="loader" @click="openLoginDialog">
             <login-logo></login-logo>
           </div>
-          <el-avatar v-else :size="50" :src="'http://localhost:3000' + userStore.userInfo.headImgUrl"
+          <el-avatar v-else :size="50" :src="'http://47.122.85.193:3000' + userStore.userInfo.headImgUrl"
             @click="openLoginDialog" />
         </a>
       </div>

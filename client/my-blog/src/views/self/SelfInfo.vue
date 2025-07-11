@@ -34,7 +34,7 @@ const getUser = () => {
   form.value.headImgUrl = userStore.userInfo.headImgUrl
 }
 getUser()
-const uploadUrl = 'http://localhost:3000/api/upload'; // 对应后端路由的路径
+const uploadUrl = 'http://47.122.85.193:3000/api/upload'; // 对应后端路由的路径
 // 上传请求头，添加token等认证信息（如果需要）
 const headers = {
   'Authorization': 'Bearer ' + userStore.token, // 如果需要认证
@@ -99,7 +99,7 @@ const edit = async () => {
       <el-card max-width="500" style="margin:0 auto;">
         <el-form :rules="rules" :model="form" ref="formRef">
           <div style="display: flex; justify-content: center;margin-bottom: 10px;">
-            <el-avatar :size="100" :src="'http://localhost:3000' + form.headImgUrl || circleUrl"
+            <el-avatar :size="100" :src="'http://47.122.85.193:3000' + form.headImgUrl || circleUrl"
               style="display: block;" />
           </div>
           <el-form-item style="display: flex;justify-content: center;">
@@ -113,8 +113,8 @@ const edit = async () => {
               </el-upload>
               <!-- 显示已上传的图片 -->
               <div v-if="form.headImgUrl" style="width: 100px;">
-                <el-avatar max-scale="1" :src="'http://localhost:3000' + form.headImgUrl"
-                  :preview-src-list="['http://localhost:3000' + form.headImgUrl]" />
+                <el-avatar max-scale="1" :src="'http://47.122.85.193:3000' + form.headImgUrl"
+                  :preview-src-list="['http://47.122.85.193:3000' + form.headImgUrl]" />
                 <el-button size="small" type="danger" @click="removeImage">删除图片</el-button>
               </div>
             </div>
